@@ -2,11 +2,9 @@ import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
-import java.io.OutputStreamWriter;
-import java.io.Writer;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -14,12 +12,23 @@ import java.util.HashSet;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-
+/**
+ * @author Benseddik Mohammed
+ * @author Sami Bergaoui
+ * @version 1.0.1
+ * 
+ */
 public class Slave {
 
 	static String directoryPath = "/cal/homes/bargaoui/shavadoopFiles/";
 	static String delimitersFilePath = directoryPath + "motsIgnores.txt";
+	static String extensionFiles = ".txt";
 
+	/**
+	 * @return delimiters : An ArrayList of delimiters we ignore in the file
+	 * @throws FileNotFoundException
+	 * @throws IOException
+	 */
 	public static ArrayList<String> getDelimiters() throws FileNotFoundException, IOException
 	{
 		ArrayList<String> delimiters = new ArrayList<String>();
@@ -34,7 +43,12 @@ public class Slave {
 		}	
 		return delimiters;
 	}
-	
+
+	/**
+	 * Refactores the word in the parameter : removes special characters from the word
+	 * @param word before refactoring
+	 * @return word refactored
+	 */
 	public static String refactor(String word) 
 	{
 		String pattern = "(\\w+)(\\.|,|;|:|!)";
@@ -47,6 +61,11 @@ public class Slave {
 		return word;
 	}
 
+	/**
+	 * gets the file index from the fileName
+	 * @param args
+	 * @return index of the current File
+	 */
 	public static int getFileIndex(String args)
 	{
 		Path p = Paths.get(args);
@@ -55,26 +74,36 @@ public class Slave {
 		return index;
 	}
 
-	public static void saveFile(String content, String fileCategory, int index)
+	/**
+	 * Saves the generic file (Umx, Smx or Rmx) depending on the fileCategory and the index
+	 * @param content is the content we want to save in the file
+	 * @param fileCategory : Umx, Smx or Rmx
+	 * @param index : index of file
+	 * @throws IOException
+	 */
+	public static void saveFile(String content, String fileCategory, int index) throws IOException
 	{
-		String filePath = "";
+		String fileName = "";
 
 		if(fileCategory.equals("Umx"))
-			filePath += directoryPath + "Um" + index + ".txt";
+			fileName += "Um" + index;
 		if(fileCategory.equals("Smx"))
-			filePath += directoryPath + "Sm" + index + ".txt";
+			fileName += "Sm" + index;
 		if(fileCategory.equals("Rmx"))
-			filePath += directoryPath + "Rm" + index + ".txt";
+			fileName += "Rm" + index;
 
-
-		try (Writer writer = new BufferedWriter(new OutputStreamWriter(
-				new FileOutputStream(filePath), "utf-8"))) {
-			writer.write(content);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+		File fileToSave =  new File(directoryPath + fileName + extensionFiles);
+		BufferedWriter bw = new BufferedWriter(new FileWriter(fileToSave));
+		bw.write(content);
+		bw.close();
 	}
 
+	/**
+	 * Method that does the conversion from Sx files to Umx files
+	 * @param SxfileName
+	 * @param delimiters
+	 * @return umxContent
+	 */
 	public static String mapSxToUmx(String SxfileName, ArrayList<String> delimiters)
 	{
 		String umxContent = "";
@@ -115,6 +144,12 @@ public class Slave {
 		return umxContent;
 	}
 
+	/**
+	 * Method that does the Shuffling part : conversion from the Umx files to Smx files
+	 * @param wordToSearch
+	 * @param UmxFiles
+	 * @return SmxContent
+	 */
 	public static String mapUmxToSmx(String wordToSearch, String[] UmxFiles)
 	{
 		String SmxContent = "";
@@ -145,8 +180,11 @@ public class Slave {
 		return SmxContent;
 	}
 
-
-
+	/**
+	 * Method that does the reducing part : from Smx files to Rmx files
+	 * @param SmxFileName
+	 * @return RmxContent
+	 */
 	public static String mapSmxToRmx(String SmxFileName)
 	{
 		String RmxContent = "";
@@ -176,6 +214,10 @@ public class Slave {
 		return RmxContent;
 	}
 
+	/**
+	 * Method that reads the Rmx files and prints it in the outputStream of the slave
+	 * @param RmxFilePath
+	 */
 	public static void readRmxFile(String RmxFilePath)
 	{
 		File RmxFile = new File(RmxFilePath);
@@ -191,17 +233,12 @@ public class Slave {
 		}
 	}
 
-	public static void calcul() throws InterruptedException
-	{
-		long startTime = System.nanoTime();
-
-		Thread.sleep(10000);
-
-		long endTime = System.nanoTime();
-		long duration = (endTime - startTime) / 1000000000;
-		System.out.println("Duration : " + duration);
-	}
-
+	/**
+	 * Main function to execute on the slave
+	 * @param args
+	 * @throws FileNotFoundException
+	 * @throws IOException
+	 */
 	public static void main(String[] args) throws FileNotFoundException, IOException{
 		String mode = args[0];
 		String word;
@@ -209,7 +246,7 @@ public class Slave {
 		ArrayList<String> delimiters = getDelimiters();
 		if(!(mode.equals("SxUMx") || mode.equals("UMxSMx")))
 		{
-			System.out.println("Premier Argument Slave Manquant ou incorrect !");
+			System.out.println("First argument of the slave is missing or incorrect !");
 		}
 		else
 		{
@@ -238,7 +275,7 @@ public class Slave {
 				String reducedMap = mapSmxToRmx(SmxFile);
 				saveFile(reducedMap,"Rmx", index);
 
-				pathRmx = directoryPath + "Rm" + index + ".txt";
+				pathRmx = directoryPath + "Rm" + index + extensionFiles;
 				readRmxFile(pathRmx);
 
 			}

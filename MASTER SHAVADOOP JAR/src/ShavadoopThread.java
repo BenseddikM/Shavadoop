@@ -5,8 +5,19 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Vector;
 
+<<<<<<< HEAD
+/**
+ * @author Benseddik Mohammed
+ * @author Sami Bergaoui
+ * @version 1.0.1
+ * 
+ */
+public class ShavadoopThread extends Thread{
+	String directoryPath = "/cal/homes/mbenseddik/shavadoopFiles/";
+=======
 public class ShavadoopThread extends Thread implements Runnable{
 	String directoryPath = "/cal/homes/bargaoui/shavadoopFiles/";
+>>>>>>> origin/master
 	String pathSlaveJar = directoryPath + "SLAVESHAVADOOP.jar";
 	String userSession = "ssh bargaoui@";
 	String namePc;
@@ -17,20 +28,37 @@ public class ShavadoopThread extends Thread implements Runnable{
 	String wordToReduce;
 	ArrayList<String> SlaveOutputStream;
 
+	/**
+	 * Getter of the SlaveOutputStream
+	 * @return SlaveOutputStream is all the output the slave produces on the outputStream
+	 */
 	public ArrayList<String> getSlaveOutputStream() {
 		return SlaveOutputStream;
 	}
 
-	// First constructor for Sx Mode
-	public ShavadoopThread(String namePc, String Sx,String mode){
+	/**
+	 * First constructor of the thread for SxUMx Mode
+	 * @param namePc
+	 * @param Sx is the SxfileName
+	 * @param mode is the mode of execution of the thread : SxUMx or UMxSMx
+	 */
+	public ShavadoopThread(String namePc, String SxFileName,String mode){
 		this.namePc = namePc;
 		SlaveOutputStream = new ArrayList<String>();
-		pathSx = " " + directoryPath + Sx;
+		pathSx = " " + directoryPath + SxFileName;
 		this.mode = mode;
 	}
 
-	// Second constructor for Umx Mode
-	public ShavadoopThread(String namePc, String wordToReduce, HashSet<String> listOfUmx , String pathSmx,String mode){
+	/**
+	 * Second constructor of the thread for UMxSMx Mode
+	 * @param namePc
+	 * @param wordToReduce is the word we want to count the occurence for
+	 * @param listOfUmx list of Umx files where the word appears
+	 * @param pathSmx path of the Smx file where to save the shuffled Umx 
+	 * @param mode
+	 */
+	public ShavadoopThread(String namePc, String wordToReduce, HashSet<String> listOfUmx ,
+			String pathSmx,String mode){
 		this.namePc = namePc;
 		this.wordToReduce = wordToReduce;
 		this.pathSmx = pathSmx;
@@ -42,8 +70,15 @@ public class ShavadoopThread extends Thread implements Runnable{
 		this.mode = mode;
 	}
 
+	/**
+	 * This method executes an ssh command and get the output from the outputStream of the slave
+	 * @param command is the ssh command to run the slave with all the parameters
+	 * @return contentFile is the final content of Umx or Smx/Rmx files we get from the
+	 * output from the slave
+	 */
 	public String getOutputStreamThread(String command)
 	{
+		// Creating the ssh command
 		Vector<String> commandBash = new Vector<String>();
 		commandBash.add("bash");
 		commandBash.add("-c");
@@ -58,6 +93,7 @@ public class ShavadoopThread extends Thread implements Runnable{
 			e.printStackTrace();
 		}
 
+		// Reading the outputStream from the execution of the slave
 		BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
 
 		StringBuilder builder = new StringBuilder();
@@ -70,29 +106,39 @@ public class ShavadoopThread extends Thread implements Runnable{
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-
 		String contentFile = builder.toString();
+		
 		return contentFile;
 	}
-	
+
 	// doc
+	/**
+	 * A method to build the String command for the execution of the slave
+	 * depending on the mode of execution
+	 * @return
+	 */
 	public String buildCommandForThread()
 	{
 		String command = "";
 		if(mode.equals("SxUMx"))
 		{
-			command = userSession + namePc + " \"java -jar " + pathSlaveJar + " " + mode +  pathSx + "\"";
+			command = userSession + namePc + " \"java -jar " + pathSlaveJar + " " + 
+					mode +  pathSx + "\"";
 		}
 		if(mode.equals("UMxSMx"))
 		{
 			command = userSession + namePc + " \"java -jar " 
-					+ pathSlaveJar + " " + mode + " " + wordToReduce + " " + pathSmx + " " +  pathsUmx + "\"";
+					+ pathSlaveJar + " " + mode + " " + wordToReduce + " " + pathSmx + " " +
+					pathsUmx + "\"";
 		}
-		
+
 		return command;
 	}
 
 	// The run function for the thread
+	/* (non-Javadoc)
+	 * @see java.lang.Thread#run()
+	 */
 	public void run(){
 		String command = buildCommandForThread();
 		String contentFile = getOutputStreamThread(command);
