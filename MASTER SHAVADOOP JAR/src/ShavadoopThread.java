@@ -6,9 +6,9 @@ import java.util.HashSet;
 import java.util.Vector;
 
 public class ShavadoopThread extends Thread implements Runnable{
-	String directoryPath = "/cal/homes/mbenseddik/shavadoopFiles/";
+	String directoryPath = "/cal/homes/bargaoui/shavadoopFiles/";
 	String pathSlaveJar = directoryPath + "SLAVESHAVADOOP.jar";
-	String userSession = "ssh mbenseddik@";
+	String userSession = "ssh bargaoui@";
 	String namePc;
 	String pathSx;
 	String pathsUmx = "";
