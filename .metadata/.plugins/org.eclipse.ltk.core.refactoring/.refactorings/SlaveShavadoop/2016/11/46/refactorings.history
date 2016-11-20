@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Move element &apos;Slave.java&apos; to &apos;SlaveShavadoop/src/slave&apos;&#x0A;- Original project: &apos;SlaveShavadoop&apos;&#x0A;- Destination element: &apos;SlaveShavadoop/src/slave&apos;&#x0A;- Original element: &apos;Slave.java&apos;&#x0A;- Update references to refactored element" description="Move compilation unit" destination="/src&lt;slave" element1="/src&lt;{Slave.java" files="0" flags="589830" folders="0" id="org.eclipse.jdt.ui.move" policy="org.eclipse.jdt.ui.moveResources" qualified="false" references="true" stamp="1479635295691" units="1" version="1.0"/>
+</session>
