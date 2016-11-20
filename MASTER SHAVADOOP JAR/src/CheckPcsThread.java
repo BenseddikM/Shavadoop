@@ -1,20 +1,17 @@
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Vector;
 
 
-public class checkPcsThread extends Thread{
+public class CheckPcsThread extends Thread{
 
 
 	public String pcName;
 	private boolean activePc = false;
 	static String userName = "mbenseddik@";
-	private java.util.List<TaskListener> listeners = Collections.synchronizedList(new ArrayList<TaskListener>());
 	
-	public checkPcsThread(String pcName)
+	public CheckPcsThread(String pcName)
 	{
 		this.pcName = pcName;
 	}
@@ -51,39 +48,13 @@ public class checkPcsThread extends Thread{
 		return pcName;
 	}
 
-	public void addListener(TaskListener listener)
-	{
-		listeners.add(listener);
-	}
-
-	public void removeListener(TaskListener listener)
-	{
-		listeners.remove(listener);
-	}
-
-	private final void notifyListeners()
-	{
-		synchronized (listeners) {
-			for(TaskListener listener : listeners){
-				listener.threadComplete(this);
-			}
-		}
-	}
 
 	@Override
 	public void run() {
-		// TODO Auto-generated method stub
 		try {
 			checkPcIsActif();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}
-		
-		notifyListeners();
-		for(int i = 0; i< listeners.size(); i++)
-		{
-			System.out.println(listeners.get(i));
 		}
 	}
 

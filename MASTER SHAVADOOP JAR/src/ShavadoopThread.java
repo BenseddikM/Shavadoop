@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Vector;
 
-<<<<<<< HEAD
 /**
  * @author Benseddik Mohammed
  * @author Sami Bergaoui
@@ -14,10 +13,6 @@ import java.util.Vector;
  */
 public class ShavadoopThread extends Thread{
 	String directoryPath = "/cal/homes/mbenseddik/shavadoopFiles/";
-=======
-public class ShavadoopThread extends Thread implements Runnable{
-	String directoryPath = "/cal/homes/bargaoui/shavadoopFiles/";
->>>>>>> origin/master
 	String pathSlaveJar = directoryPath + "SLAVESHAVADOOP.jar";
 	String userSession = "ssh bargaoui@";
 	String namePc;

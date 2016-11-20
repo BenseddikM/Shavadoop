@@ -1,0 +1,531 @@
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
+import java.io.UnsupportedEncodingException;
+import java.io.Writer;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map.Entry;
+import java.util.Vector;
+
+
+/**
+ * @author Benseddik Mohammed
+ * @author Sami Bergaoui
+ * @version 1.0.1
+ * 
+ */
+public class Master {
+
+	static String finalFile = "";
+	static String directory = "/cal/homes/mbenseddik/shavadoopFiles/";
+	static String pcsFilePath = "listOfPcs2.txt";
+	static String extensionFiles = ".txt";
+	static String finalFileName = "reducedFile.txt";
+	static int splitSxPortion = 100;
+	static long timeout = 2000L;
+	static long millisecondsUnit = 1000000000;
+
+
+	/**
+	 * This method checks the ssh connexion to all the pcs whitin the Telecom ParisTech's computer park.
+	 * from the file named *pcsFilePath*, we send an ssh request "echo $((1))" for each computer in the
+	 * room, and we update our Dictionary of active pcs for each computer that sent an answer.
+	 * As we can see for the latest version, we use also threads to have a better execution timer for
+	 * this part.
+	 * @param listOfPcsFile is the name of file which contains the list of pcs to consider as slaves
+	 * @return listOfActivePcs is the Dictionary of active pcs within the room
+	 * @throws IOException  if we can't reach or open the listOfPcsFile
+	 * @throws InterruptedException as for the interrupted threads that search for active pcs
+	 */
+	public static ArrayList<String> getListOfActivePcs(String listOfPcsFile) 
+			throws IOException, InterruptedException
+	{
+
+		// allPcs is the vector of all pcs in the room, active or down
+		Vector<String> allPcs = new Vector<>();
+		// We initialize here our threads Dictionary for each pc 
+		ArrayList<CheckPcsThread> pcThreads = new ArrayList<CheckPcsThread>();
+		// Our Dictionary of active pcs only
+		ArrayList<String> listOfActivePcs = new ArrayList<String>();
+
+		// **This part of code is here just to get the execution time
+		long startTime = System.nanoTime();
+
+		// We initialize here a FileReader and a BufferedReader so that we can browse the pcsFile line
+		// by line, and add each line of the file (as an actual pc) to the allPcs Dictionary
+		FileReader fileReader = new FileReader(listOfPcsFile);
+		BufferedReader br = new BufferedReader(fileReader);
+		String line;
+		while( (line = br.readLine()) != null)
+		{
+			allPcs.add(line);
+		}
+		br.close();
+
+		// Some display tricks here..
+		System.out.println("\nChecking The connexion on all the pcs...");
+		ShavadoopUtils.displayStars();
+
+		System.out.println("\nChecking The connexion on all the pcs...");
+		displayStars();
+
+		System.out.print("[");
+
+		// We check here the true pcs that are on (or connected to the network). We initialize a
+		// Dictionary of CheckPcsThread, each thread checks if the pc sends an answer to the ssh request
+		// or not
+		for(int i=0;i < allPcs.size(); i++)
+		{
+<<<<<<< HEAD
+			CheckPcsThread threadOfWord = new CheckPcsThread(allPcs.get(i));
+			pcThreads.add(threadOfWord);
+			pcThreads.get(i).start();
+			System.out.print( "==");
+		}
+
+		// Joining the threads here and adding the actual active pc to the listOfActivePcs Dictionary
+=======
+			pcThreads.add(new checkPcsThread(allPcs.get(i)));
+			pcThreads.get(i).start();
+			System.out.print( "==");
+		}
+		
+>>>>>>> origin/master
+		for(int i=0;i < pcThreads.size(); i++)
+		{
+			pcThreads.get(i).join();
+			if(pcThreads.get(i).isActivePc() == true)
+			{
+				listOfActivePcs.add(pcThreads.get(i).getPcName());
+			}
+		}
+<<<<<<< HEAD
+
+		// Some display tricks here..
+		System.out.print( "]");
+		System.out.println("\nChecking the pcs Done! The list of pcs :");
+
+		// Display of all the active pcs on the room
+=======
+		System.out.print( "]");
+		System.out.println("\nChecking the pcs Done! The list of pcs :");
+>>>>>>> origin/master
+		for(String pc : listOfActivePcs)
+		{
+			System.out.println(pc + " : OK !");
+		}
+<<<<<<< HEAD
+
+		// **This part of code is here just to get the execution time
+		long endTime = System.nanoTime();
+		long duration = (endTime - startTime) / millisecondsUnit;
+		System.out.println("Duration of SEARCH FOR ACTVE PCS : " + duration + "seconds !");
+
+
+		return listOfActivePcs;
+	}
+
+	/**
+	 * This method splits all the Sx files to UMx files using threads on slaves. Sx files are created
+	 * by the master directly by spliting the original file by lines or block of lines (see the splitSx
+	 * an the splitSxBlock methods in the ShavadoopUtils class for more details).
+	 * The purpose here to get the "Map" part of the MapReduce pattern. For each word in the Sxfiles,
+	 * we put an occurence of "1" in the corresponding Umx File. The reducing part is done later on
+	 * the UmxtoSmx part.
+	 * @param listOfActivePcs is the dictionnay of active pcs on the room, we get if from 
+	 * the getListOfActivePcs() method
+	 * @param SxDictionary is the dictionnay of all the Sx files we get from the SplitSx methods
+	 * @return UmxDictionnay which is a Dictionary of (keys = UmxFiles) and (Entries = words whithin
+	 * the corresponding UmxFile)
+	 * @throws InterruptedException if we get an interrupted thread on the join of threads of slaves
+	 */
+	public static HashMap<String,ArrayList<String>> 
+	splitOnUmx(ArrayList<String> listOfActivePcs,ArrayList<String> SxDictionary) 
+			throws InterruptedException
+=======
+		return listOfActivePcs;
+	}
+	public static HashMap<String,ArrayList<String>> splitOnUmx(ArrayList<String> listOfActivePcs,ArrayList<String> SxDictionnary) throws InterruptedException
+>>>>>>> origin/master
+	{
+		// The initialization part. We have a Dictionary of slave threads named simply "threads"
+		ArrayList<ShavadoopThread> threads = new ArrayList<ShavadoopThread>();
+<<<<<<< HEAD
+		// The Umx Dictionary that contains each Umx file and the corresponding words in the file
+		HashMap<String,ArrayList<String>> UmxDictionary = new HashMap<String, ArrayList<String>>();
+
+		// indexOfActivePcs is to an index to give each pc an amount of slave threads to run. We use
+		// here a "modulo" way for the problem, we mean by that : we loop on the SxFile, whenever we
+		// looped on the whole list of pcs, we return to the begining of the pcs list and attribute
+		// some more threads for each pc.
+		// This method is a bit wacky, and should be replaced in the future by a better system to manage
+		// the threads and activePcs.
+		int indexOfActivePcs = 0;
+		// indexOfFile is an index to name the Umx File (Um + indexOfFile)
+		int indexOfFile = 0;
+
+		// **This part of code is here just to get the execution time
+		long startTime = System.nanoTime();
+
+		// Some display tricks here..
+		System.out.println("\nSpliting on Umx files...");
+		ShavadoopUtils.displayStars();
+
+		// Loop on the SxDictionary
+		for (int i = 0; i< SxDictionary.size(); i++)
+=======
+		HashMap<String,ArrayList<String>> UmxDictionnary = new HashMap<String, ArrayList<String>>();
+		int i;
+		int index = 0;
+		System.out.println("\nSpliting on Umx files...");
+		displayStars();
+		for (i = 0; i< SxDictionnary.size(); i++)
+>>>>>>> origin/master
+		{
+			// The pc we want our thread to run on
+			String pcToRunOn = listOfActivePcs.get(indexOfActivePcs);
+			// The Sx file we want to threat
+			String SxToRun = SxDictionary.get(i);
+
+			System.out.println("On lance Slave sur le pc : " + 
+					pcToRunOn + " pour split le fichier : " + SxToRun);
+			// Adding the new thread to the thread Dictionary..
+			threads.add(new ShavadoopThread(pcToRunOn,SxToRun,"SxUMx"));
+			// ..and starting the thread here
+			threads.get(i).start();
+<<<<<<< HEAD
+
+			// Updating the indexOfActivePcs by the "modulo" system
+			indexOfActivePcs = (indexOfActivePcs +1) % listOfActivePcs.size();
+		}
+
+		// Re initializing the indexOfActivePcs for the "join" loop
+		indexOfActivePcs = 0;
+
+		for (int i = 0; i< SxDictionary.size(); i++)
+		{
+			indexOfFile = i+1;
+
+			// The pc we want our thread to wait on for the other threads to be complete
+			String pcToRunOn = listOfActivePcs.get(indexOfActivePcs);
+			// The Sx file we are currently threating
+			String SxToRun = SxDictionary.get(i);
+
+			// We tell our threads here to wait for the other threads to finish the work, and
+			// we set a "timeout" initialized as a static variable, so that we can kill the dead
+			// or blocked threads, and restart them later on
+			threads.get(i).join(timeout);
+
+			// Checking if the thread is running even after the timeout limit..
+			if(threads.get(i).isAlive())
+			{
+				System.out.println("Dead thread : " + threads.get(i).getName());
+				// .. and killing it afterwards
+				threads.get(i).interrupt();
+			}
+			else
+			{
+				// if the thread finished its work succesfully, we finish the process by creating
+				// the Umx file and updating the UmxDictionary, the content of the Umx file is
+				// sent by the slave in the outputStream, and we can get it by the getSlaveOutputStream
+				// method that we created in the slave
+				UmxDictionary.put("Um"+ indexOfFile +extensionFiles,
+						threads.get(i).getSlaveOutputStream());
+
+				System.out.println("Umx part.. The work on the pc : " + pcToRunOn +
+						" for the file : " + SxToRun + " is Done !");
+
+				// Updating the indexOfActivePcs by the "modulo" system
+				indexOfActivePcs = (indexOfActivePcs +1) % listOfActivePcs.size();
+			}
+
+		}
+
+		// @Todo : restart dead threads..
+		// ! we should implement this part later on another version.. !
+		System.out.println("\nSpliting on Umx Done!");
+
+		// **This part of code is here just to get the execution time
+		long endTime = System.nanoTime();
+		long duration = (endTime - startTime) / millisecondsUnit;
+		System.out.println("Duration of SPLIT ON UMX : " + duration + "seconds !");
+
+		ShavadoopUtils.displayStars();
+
+		return UmxDictionary;
+	}
+
+	/**
+	 * This method does the "reducing" part on the MapReduce algorithm. We take all our Umx Files that
+	 * we created on the "Map" phase, and we shuffle each word on the Umx files to regroup them on the
+	 * Smx files. The Smx files contains only one word repeated as many time as it appears in the Umx
+	 * file with its occurence being conserved.
+	 * @param wordsDictionary is the Dictionary of words and their respective Umx file where they
+	 * appear. We get this Dictionary by converting the UmxDictionary obtained in the Map phase
+	 * and using the function convertUmxDictToWordsDict on the ShavadoopUtils Class
+	 * @param listOfActivePcs as seen before..
+	 * @return RmxDictionary is the Dictionary of RmxFiles, after the shuffle and reducing phase
+	 * @throws InterruptedException is the slave threads are interrupted
+	 */
+	public static HashMap<String,String> splitOnSmXAndRmx(HashMap<String, HashSet<String>> 
+	wordsDictionary, ArrayList<String> listOfActivePcs) throws InterruptedException
+=======
+			index = (index +1) % listOfActivePcs.size();
+		}
+		index = 0;
+		for (i = 0; i< SxDictionnary.size(); i++)
+		{
+			int a = i+1;
+			String pcToRunOn = listOfActivePcs.get(index);
+			String SxToRun = SxDictionnary.get(i);
+			threads.get(i).join();
+			UmxDictionnary.put("Um"+ a +extensionFiles, threads.get(i).getSlaveOutputStream());
+			System.out.println("Traitement sur le pc : " + pcToRunOn + " pour le fichier : " + SxToRun + " Fini !");
+			index = (index +1) % listOfActivePcs.size();
+		}
+		System.out.println("\nSpliting on Umx Done!");
+		displayStars();
+		return UmxDictionnary;
+	}
+	public static HashMap<String,String> splitOnSmXAndRmx(HashMap<String, HashSet<String>> wordsDictionnary, ArrayList<String> listOfActivePcs) throws InterruptedException
+>>>>>>> origin/master
+	{
+		HashMap<String, String> RmxDictionary = new HashMap<String, String>();
+		ArrayList<ShavadoopThread> threads = new ArrayList<ShavadoopThread>();
+<<<<<<< HEAD
+		ArrayList<ShavadoopThread> deadThreads = new ArrayList<ShavadoopThread>();
+		
+		// **This part of code is here just to get the execution time
+		long startTime = System.nanoTime();
+
+		int i = 0;
+		// indexOfActivePcs is to an index to give each pc an amount of slave threads to run. We use
+		// here a "modulo" way for the problem, we mean by that : we loop on the SxFile, whenever we
+		// looped on the whole list of pcs, we return to the begining of the pcs list and attribute
+		// some more threads for each pc.
+		// This method is a bit wacky, and should be replaced in the future by a better system to manage
+		// the threads and activePcs.
+		int indexOfActivePcs = 0;
+		// indexOfFile is an index to name the Smx File (Sm + indexOfFile) and Rmx File
+		// (Rm + indexOfFile)
+		int indexOfFile = 0;
+
+		// Some display tricks here..
+=======
+		int i = 0;
+		int index = 0;
+>>>>>>> origin/master
+		System.out.println("\nSpliting on Smx And doing the Rmx part...");
+		ShavadoopUtils.displayStars();
+		
+		// We loop on the words of the file, create the corresponding thread and update the
+		// thread dictionary
+		for (Entry<String, HashSet<String>> entry : wordsDictionary.entrySet())
+		{
+			// The pc we want our thread to run on
+			String pcToRunOn = listOfActivePcs.get(indexOfActivePcs);
+			// The word we are currently threating
+			String word = entry.getKey();
+			HashSet<String> listUmx = entry.getValue();
+<<<<<<< HEAD
+			
+			indexOfFile = i + 1;
+			String pathSmx = directory + "Sm" + indexOfFile + extensionFiles;
+
+			System.out.println("We run the slave on the pc : " 
+					+ pcToRunOn + " to get the reducedFile : " + pathSmx);
+			// Adding the new thread to the thread Dictionary..
+=======
+			int a = i + 1;
+			String pathSmx = directory + "Sm" + a + extensionFiles;
+			System.out.println("On lance Slave sur le pc : " + pcToRunOn + " pour avoir le reducedFile : " + pathSmx);
+>>>>>>> origin/master
+			threads.add(new ShavadoopThread(pcToRunOn,word,listUmx,pathSmx,"UMxSMx"));
+			// ..and starting the thread here
+			threads.get(i).start();
+			
+			i++;
+			indexOfActivePcs = (indexOfActivePcs +1) % listOfActivePcs.size();
+		}
+<<<<<<< HEAD
+
+		indexOfActivePcs = 0;
+		// Looping on the threads dictionary here
+=======
+		index = 0;
+>>>>>>> origin/master
+		for (i = 0;i< threads.size(); i++)
+		{
+			indexOfFile = i+1;
+			String pcToRunOn = listOfActivePcs.get(indexOfActivePcs);
+			
+			// Same timeout than the Umx Split part
+			threads.get(i).join(timeout);
+			// And checking if the thread is still running to kill it
+			if(threads.get(i).isAlive())
+			{
+				System.out.println("Dead Thread : " + threads.get(i).getName());
+				threads.get(i).interrupt();
+				deadThreads.add(threads.get(i));
+			}
+			// Successfull threads
+			if(!threads.get(i).getSlaveOutputStream().isEmpty())
+				finalFile += threads.get(i).getSlaveOutputStream().get(0) + "\n";
+<<<<<<< HEAD
+			RmxDictionary.put("Rm" + indexOfFile + extensionFiles, pcToRunOn);
+			indexOfActivePcs = (indexOfActivePcs +1) % listOfActivePcs.size();
+=======
+			RmxDictionnary.put("Rm" + a + extensionFiles, pcToRunOn);
+			index = (index +1) % listOfActivePcs.size();
+>>>>>>> origin/master
+		}
+		System.out.println("\nSmx and Rmx parts Done!");
+		// **This part of code is here just to get the execution time
+		long endTime = System.nanoTime();
+		long duration = (endTime - startTime) / millisecondsUnit;
+		
+		// Some display tricks here..
+		System.out.println("Duration of SPLIT ON SMX AND RMX : " + duration + "seconds !");
+		ShavadoopUtils.displayStars();
+		System.out.println("\nAll Done!");
+<<<<<<< HEAD
+
+		return RmxDictionary;
+	}
+
+	/**
+	 * This function runs all the precedent methods.
+	 * It is launched on the main part for the master
+	 * @param SxDictionary is the list of Sx Files after the initial split
+	 * @return wordsDictionnary which is the final reduced dictionary
+	 * @throws IOException in case we can't load the Input file
+	 * @throws InterruptedException in case the threads we start are interrupted
+	 */
+	public static HashMap<String,HashSet<String>> 
+	runOnSlaves(ArrayList<String> SxDictionary) throws IOException, InterruptedException
+	{
+		HashMap<String,ArrayList<String>> UmxDictionary = new HashMap<String,ArrayList<String>>();
+
+		// get the list of active pcs first
+		ArrayList<String> listOfActivePcs = getListOfActivePcs(pcsFilePath);
+		// and then the Map part by spliting on Umx files
+		UmxDictionary = splitOnUmx(listOfActivePcs,SxDictionary);
+		
+		// we get then the wordsDictionnary
+		HashMap<String,HashSet<String>> wordsDictionary = 
+				ShavadoopUtils.convertUmxDictToWordsDict(UmxDictionary);
+		System.out.println("Words-Umx Dictionary :");
+		System.out.println(Arrays.deepToString(wordsDictionary.entrySet().toArray()));
+		
+		// and finally we do the Reducing part
+		splitOnSmXAndRmx(wordsDictionary, listOfActivePcs);
+
+		return wordsDictionary;
+	}
+
+	/**
+	 * Main Master function
+	 * @param args
+	 * @throws IOException
+	 * @throws InterruptedException
+	 */
+	public static void main(String[] args) throws IOException, InterruptedException {
+		// Some display tricks here..
+		ShavadoopUtils.welcome();
+		ShavadoopUtils.deleteOldFiles();
+		ShavadoopUtils.displayStars();
+		ShavadoopUtils.displayStars();
+
+		// **This part of code is here just to get the execution time
+		long startTime = System.nanoTime();
+		
+		// Initial Split on Sx files
+		ArrayList<String> SxDictionary = ShavadoopUtils.splitSxBloc(args, splitSxPortion);
+		// Doing the mapReduce algorithm on the slave threads here..
+		runOnSlaves(SxDictionary);
+		// and saving the final wordCount file
+		ShavadoopUtils.saveFinalFile();
+		
+		// **This part of code is here just to get the execution time
+		long endTime = System.nanoTime();
+		long duration = (endTime - startTime) / millisecondsUnit;
+		System.out.println("Total Duration : " + duration + "seconds !");
+=======
+		return RmxDictionnary;
+	}
+	public static HashMap<String,HashSet<String>> runOnSlaves(ArrayList<String> SxDictionnary) throws IOException, InterruptedException
+	{
+		HashMap<String,ArrayList<String>> UmxDictionnary = new HashMap<String,ArrayList<String>>();
+		ArrayList<String> listOfActivePcs = getListOfActivePcs(pcsFilePath);
+		UmxDictionnary = splitOnUmx(listOfActivePcs,SxDictionnary);
+		HashMap<String,HashSet<String>> wordsDictionnary = convertUmxDictToWordsDict(UmxDictionnary);
+		System.out.println("Words-Umx Dictionnary :");
+		System.out.println(Arrays.deepToString(wordsDictionnary.entrySet().toArray()));
+		splitOnSmXAndRmx(wordsDictionnary, listOfActivePcs);
+		return wordsDictionnary;
+	}
+	public static HashMap<String,HashSet<String>> convertUmxDictToWordsDict(HashMap<String,ArrayList<String>> UmxDictionnary)
+	{
+		HashMap<String,HashSet<String>> wordsDictionnary = new HashMap<String, HashSet<String>>();
+		for (String key: UmxDictionnary.keySet()) {
+			ArrayList<String> wordsOfUm = UmxDictionnary.get(key);
+			for (int i = 0; i< wordsOfUm.size(); i++)
+			{
+				String word = wordsOfUm.get(i);
+				if (!wordsDictionnary.containsKey(word))
+				{   
+					HashSet<String> tmp = new HashSet<String>();
+					tmp.add(key);
+					wordsDictionnary.put(word, tmp);
+				}
+				else
+				{
+					wordsDictionnary.get(word).add(key);
+				}
+			}
+		}
+		return wordsDictionnary;
+	}
+	public static void saveFinalFile() throws UnsupportedEncodingException, FileNotFoundException, IOException
+	{
+		try (Writer writer = new BufferedWriter(new OutputStreamWriter(
+				new FileOutputStream(directory + finalFileName), "utf-8"))) {
+			writer.write(finalFile);
+		}
+	}
+	public static void displayStars()
+	{
+		System.out.println("**********************************************************************");
+		System.out.println("**********************************************************************\n\n");
+	}
+	public static void welcome()
+	{
+		System.out.println("********************************************************************");
+		System.out.println("*        𝕎𝕖𝕝𝕔𝕠𝕞𝕖 𝕥𝕠 𝕊𝕙𝕒𝕧𝕒𝕕𝕠𝕠𝕡 - 𝕎𝕠𝕣𝕕ℂ𝕠𝕦𝕟𝕥 𝕄𝕒𝕡ℝ𝕖𝕕𝕦𝕔𝕖                                       *");
+		System.out.println("* 		 ᴡᴇʟᴄᴏᴍᴇ ᴛᴏ ꜱʜᴀᴠᴀᴅᴏᴏᴘ - ᴡᴏʀᴅᴄᴏᴜɴᴛ ᴍᴀᴘʀᴇᴅᴜᴄᴇ		      *");
+		System.out.println("*        Wₑₗcₒₘₑ ₜₒ ₛₕₐᵥₐdₒₒₚ ₋ WₒᵣdCₒᵤₙₜ ₘₐₚᵣₑdᵤcₑ		   *");
+		System.out.println("*Ⓦⓔⓛⓒⓞⓜⓔ ⓣⓞ Ⓢⓗⓐⓥⓐⓓⓞⓞⓟ     -⃝ ⓌⓞⓡⓓⒸⓞⓤⓝⓣ ⓂⓐⓟⓇⓔⓓⓤⓒⓔ*");
+		System.out.println("*        Wêl¢ðmê †ð §håvåÐððþ - WðrÐÇðµñ† MåþRêÐµ¢ê                *");
+		System.out.println("********************************************************************");
+	}
+	public static void main(String[] args) throws IOException, InterruptedException {
+		welcome();
+		deleteOldFiles();
+		displayStars();
+		displayStars();
+		long startTime = System.nanoTime();
+		ArrayList<String> SxDictionnary = splitSxBloc(args,2);
+		runOnSlaves(SxDictionnary);
+		saveFinalFile();
+		long endTime = System.nanoTime();
+		long duration = (endTime - startTime) / 1000000000;
+		System.out.println("Duration : " + duration + "seconds !");
+>>>>>>> origin/master
+	}
+}
