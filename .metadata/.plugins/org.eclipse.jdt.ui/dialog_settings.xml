@@ -79,6 +79,9 @@
 		<item value="340" key="DIALOG_X_ORIGIN"/>
 		<item value="44" key="DIALOG_Y_ORIGIN"/>
 	</section>
+	<section name="NewPackageWizardPage">
+		<item value="false" key="create_package_info_java"/>
+	</section>
 	<section name="completion_proposal_size">
 	</section>
 	<section name="JavaElementSearchActions">
