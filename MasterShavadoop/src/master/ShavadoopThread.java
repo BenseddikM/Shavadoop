@@ -13,15 +13,16 @@ import java.util.Vector;
  * 
  */
 public class ShavadoopThread extends Thread{
-	String directoryPath = "/cal/homes/mbenseddik/shavadoopFiles/";
-	String pathSlaveJar = directoryPath + "SLAVESHAVADOOP.jar";
-	String userSession = "ssh bargaoui@";
+	String directoryPath = Master.directory;
+	String pathSlaveJar = directoryPath + Master.slaveJarName;
+	String userSession = "ssh " + Master.userName;
 	String namePc;
 	String pathSx;
 	String pathsUmx = "";
 	String pathSmx;
 	String mode;
 	String wordToReduce;
+	HashSet<String> listOfUmx;
 	ArrayList<String> SlaveOutputStream;
 
 	/**
@@ -64,6 +65,27 @@ public class ShavadoopThread extends Thread{
 			pathsUmx += " " + directoryPath + umxs;
 		}
 		this.mode = mode;
+		this.listOfUmx = listOfUmx;
+	}
+
+	public HashSet<String> getListOfUmx() {
+		return listOfUmx;
+	}
+
+	public String getNamePc() {
+		return namePc;
+	}
+
+	public String getPathsUmx() {
+		return pathsUmx;
+	}
+
+	public String getPathSmx() {
+		return pathSmx;
+	}
+
+	public String getWordToReduce() {
+		return wordToReduce;
 	}
 
 	/**
