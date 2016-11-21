@@ -23,18 +23,17 @@ import java.util.Vector;
  * 
  */
 public class Master {
-	static String finalFile = "";
-	static String directory = "/cal/homes/mbenseddik/shavadoopFiles/";
-	static String slaveJarName = "SLAVESHAVADOOP.jar";
-	static String delimitersFileName = "motsIgnores.txt";
-	static String pcsFilePath = "listOfPcs2.txt";
-	static String userName = "mbenseddik@";
-	static String extensionFiles = ".txt";
-	static String finalFileName = "reducedFile.txt";
-	static long timeout = 700L;
-	static long millisecondsUnit = 1000000000;
-	static int splitSxPortion = 100;
-
+	static String finalFile = ConstantsMaster.finalFile;
+	static String directory = ConstantsMaster.directory;
+	static String slaveJarName = ConstantsMaster.slaveJarName;
+	static String delimitersFileName = ConstantsMaster.delimitersFileName;
+	static String pcsFilePath = ConstantsMaster.pcsFilePath;
+	static String userName = ConstantsMaster.userName;
+	static String extensionFiles = ConstantsMaster.extensionFiles;
+	static String finalFileName = ConstantsMaster.finalFileName;
+	static long timeout = ConstantsMaster.timeout;
+	static long millisecondsUnit = ConstantsMaster.millisecondsUnit;
+	static int splitSxPortion = ConstantsMaster.splitSxPortion;
 
 	/**
 	 * This method checks the ssh connexion to all the pcs whitin the Telecom ParisTech's computer park.
@@ -471,6 +470,5 @@ public class Master {
 		long duration = (endTime - startTime) / millisecondsUnit;
 		System.out.println("Total Duration : " + duration + "seconds !");
 		System.exit(0);
-
 	}
 }

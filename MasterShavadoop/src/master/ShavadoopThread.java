@@ -13,9 +13,9 @@ import java.util.Vector;
  * 
  */
 public class ShavadoopThread extends Thread{
-	String directoryPath = Master.directory;
-	String pathSlaveJar = directoryPath + Master.slaveJarName;
-	String userSession = "ssh " + Master.userName;
+	String directoryPath = ConstantsMaster.directory;
+	String pathSlaveJar = directoryPath + ConstantsMaster.slaveJarName;
+	String userSession = "ssh " + ConstantsMaster.userName;
 	String namePc;
 	String pathSx;
 	String pathsUmx = "";

@@ -21,16 +21,16 @@ import java.util.HashSet;
  */
 public class ShavadoopUtils {
 
-	static String directory = Master.directory;
-	static String pcsFilePath = Master.pcsFilePath;
-	static String slaveJarName = Master.slaveJarName;
-	static String delimitersFileName = Master.delimitersFileName;
+	static String directory = ConstantsMaster.directory;
+	static String pcsFilePath = ConstantsMaster.pcsFilePath;
+	static String slaveJarName = ConstantsMaster.slaveJarName;
+	static String delimitersFileName = ConstantsMaster.delimitersFileName;
 	static String pathJar = directory + "/" + slaveJarName;
-	static String userName = Master.userName;
+	static String userName = ConstantsMaster.userName;
 	static String extensionFiles = ".txt";
 	static String finalFileName = "reducedFile.txt";
-	static long timeout = Master.timeout;
-	static long millisecondsUnit = Master.millisecondsUnit;
+	static long timeout = ConstantsMaster.timeout;
+	static long millisecondsUnit = ConstantsMaster.millisecondsUnit;
 
 
 	/**

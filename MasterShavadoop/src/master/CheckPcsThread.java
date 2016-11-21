@@ -15,7 +15,7 @@ public class CheckPcsThread extends Thread{
 
 	public String pcName;
 	private boolean activePc = false;
-	static String userName = "mbenseddik@";
+	static String userName = ConstantsMaster.userName;
 	
 	/**
 	 * Constructor of the thread, gets the pc name

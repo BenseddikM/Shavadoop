@@ -21,8 +21,8 @@ import java.util.regex.Pattern;
  */
 public class Slave {
 
-	static String directoryPath = "/cal/homes/mbenseddik/shavadoopFiles/";
-	static String delimitersFilePath = directoryPath + "motsIgnores.txt";
+	static String directoryPath = ConstantsSlave.directoryPath;
+	static String delimitersFilePath = directoryPath + ConstantsSlave.delimitersFileName;
 	static String extensionFiles = ".txt";
 
 	/**
