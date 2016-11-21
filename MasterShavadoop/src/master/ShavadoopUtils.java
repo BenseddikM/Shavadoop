@@ -88,7 +88,7 @@ public class ShavadoopUtils {
 
 
 	/**
-	 * Function that gets the file to threat (wordCount) from the arguments of the master
+	 * Function that gets the file to treat (wordCount) from the arguments of the master
 	 * @param args
 	 * @return file that contains all the content of the input file
 	 */
