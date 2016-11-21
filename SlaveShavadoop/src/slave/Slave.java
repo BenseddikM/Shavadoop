@@ -21,7 +21,7 @@ import java.util.regex.Pattern;
  */
 public class Slave {
 
-	static String directoryPath = "/cal/homes/bargaoui/shavadoopFiles/";
+	static String directoryPath = "/cal/homes/mbenseddik/shavadoopFiles/";
 	static String delimitersFilePath = directoryPath + "motsIgnores.txt";
 	static String extensionFiles = ".txt";
 

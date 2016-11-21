@@ -9,7 +9,6 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
-import java.io.UnsupportedEncodingException;
 import java.io.Writer;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -22,17 +21,16 @@ import java.util.HashSet;
  */
 public class ShavadoopUtils {
 
-	static String finalFile = "";
-	static String directory = "/cal/homes/mbenseddik/shavadoopFiles/";
-	static String pcsFilePath = "listOfPcs2.txt";
-	static String slaveJarName = "SLAVESHAVADOOP.jar";
-	static String delimitersFileName = "motsIgnores.txt";
+	static String directory = Master.directory;
+	static String pcsFilePath = Master.pcsFilePath;
+	static String slaveJarName = Master.slaveJarName;
+	static String delimitersFileName = Master.delimitersFileName;
 	static String pathJar = directory + "/" + slaveJarName;
-	static String userName = "mbenseddik@";
+	static String userName = Master.userName;
 	static String extensionFiles = ".txt";
 	static String finalFileName = "reducedFile.txt";
-	static long timeout = 2000L;
-	static long millisecondsUnit = 1000000000;
+	static long timeout = Master.timeout;
+	static long millisecondsUnit = Master.millisecondsUnit;
 
 
 	/**
@@ -280,21 +278,6 @@ public class ShavadoopUtils {
 		}
 
 		return wordsDictionary;
-	}
-
-	/**
-	 * Save the output file from the wordCount : final step of the program
-	 * @throws UnsupportedEncodingException
-	 * @throws FileNotFoundException
-	 * @throws IOException
-	 */
-	public static void 
-	saveFinalFile() throws UnsupportedEncodingException, FileNotFoundException, IOException
-	{
-		try (Writer writer = new BufferedWriter(new OutputStreamWriter(
-				new FileOutputStream(directory + finalFileName), "utf-8"))) {
-			writer.write(finalFile);
-		}
 	}
 
 }

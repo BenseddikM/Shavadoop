@@ -1,0 +1,283 @@
+package master;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
+import java.io.Writer;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+/**
+ * @author Benseddik Mohammed
+ * @author Sami Bergaoui
+ * @version 1.0.1
+ * 
+ */
+public class ShavadoopUtils {
+
+	static String directory = Master.directory;
+	static String pcsFilePath = "listOfPcs2.txt";
+	static String slaveJarName = "SLAVESHAVADOOP.jar";
+	static String delimitersFileName = "motsIgnores.txt";
+	static String pathJar = directory + "/" + slaveJarName;
+	static String userName = "mbenseddik@";
+	static String extensionFiles = ".txt";
+	static String finalFileName = "reducedFile.txt";
+	static long timeout = 2000L;
+	static long millisecondsUnit = 1000000000;
+
+
+	/**
+	 * Esthetic Display function..
+	 */
+	public static void displayStars()
+	{
+		System.out.println("\n\t\t\t*********************************************"
+				+ "**************************************");
+		System.out.println("\t\t\t***********************************************"
+				+ "************************************\n\n");
+	}
+
+	/**
+	 * Esthetic Welcome Display function..
+	 */
+	public static void welcome()
+	{
+		System.out.println("\t\t\t\t**********************************************"
+				+ "**********************");
+		System.out.println("\t\t\t\t*        𝕎𝕖𝕝𝕔𝕠𝕞𝕖 𝕥𝕠 𝕊𝕙𝕒𝕧𝕒𝕕𝕠𝕠𝕡 - 𝕎𝕠𝕣𝕕ℂ𝕠𝕦𝕟𝕥 𝕄𝕒𝕡ℝ𝕖𝕕𝕦𝕔"
+				+ "𝕖                                         *");
+		System.out.println("\t\t\t\t* 		 ᴡᴇʟᴄᴏᴍᴇ ᴛᴏ ꜱʜᴀᴠᴀᴅᴏᴏᴘ - ᴡᴏʀᴅᴄᴏᴜɴᴛ ᴍᴀᴘʀᴇ"
+				+ "ᴅᴜᴄᴇ		        *");
+		System.out.println("\t\t\t\t*        Wₑₗcₒₘₑ ₜₒ ₛₕₐᵥₐdₒₒₚ ₋ WₒᵣdCₒᵤₙₜ"
+				+ " ₘₐₚᵣₑdᵤcₑ		   *");
+		System.out.println("\t\t\t\t*Ⓦⓔⓛⓒⓞⓜⓔ ⓣⓞ Ⓢⓗⓐⓥⓐⓓⓞⓞⓟ     -⃝ ⓌⓞⓡⓓⒸ"
+				+ "ⓤⓝⓣ ⓂⓐⓟⓇⓔⓓⓤⓒⓔ *");
+		System.out.println("\t\t\t\t*        Wêl¢ðmê †ð §håvåÐððþ - WðrÐÇðµñ† MåþRêÐ"
+				+ "µ¢ê                *");
+		System.out.println("\t\t\t\t************************************************"
+				+ "********************");
+		System.out.println("\n\n\n");
+	}
+
+	/**
+	 * Deleted all the Sx, Umx, Smx and Rmx files from an anterior execution
+	 */
+	public static void deleteOldFiles()
+	{
+		File file = new File(directory);      
+		String[] myFiles;    
+		if(file.isDirectory()){
+			myFiles = file.list();
+			for (int i=0; i<myFiles.length; i++) {
+				File myFile = new File(file, myFiles[i]);
+				// We do not delete the SlaveJar and the delimitersFile from the directory
+				if(!myFiles[i].equals(slaveJarName) && !myFiles[i].equals(delimitersFileName))
+					myFile.delete();
+			}
+		}
+	}
+
+
+	/**
+	 * Function that gets the file to threat (wordCount) from the arguments of the master
+	 * @param args
+	 * @return file that contains all the content of the input file
+	 */
+	public static File getFileInput(String[] args)
+	{
+		System.out.println("Loding Input File...");
+		displayStars();
+		File fileInput = null;
+		if (args.length == 0) {
+			System.out.println("No arguments were given! Give a file input.txt in arguments.");
+			System.exit(0);
+		}
+		else
+		{
+			fileInput = new File(args[0]);
+		}
+		return fileInput;
+	}
+
+	/**
+	 * Spliting the Input file on Sx files, we split line by line here
+	 * @param args
+	 * @return
+	 */
+	public static ArrayList<String> splitSx(String[] args)
+	{
+		ArrayList<String> listOfSx = new ArrayList<String>();
+
+		File fileInput = getFileInput(args);
+		if(fileInput.exists()){
+			System.out.println("Load input file : Success!");
+			displayStars();
+			try (BufferedReader br = new BufferedReader(new FileReader(fileInput))) {
+				int index = 1;
+				System.out.println("Spliting to Sx files...");
+				displayStars();
+				String line = br.readLine();
+				while (line != null) {
+					if(!line.isEmpty())
+					{
+						System.out.println(line);
+						try (Writer writer = new BufferedWriter(new OutputStreamWriter(
+								new FileOutputStream(directory + "S"+ index + extensionFiles),
+								"utf-8"))) {
+							writer.write(line);
+							listOfSx.add("S"+index+ extensionFiles);
+						}
+						index++;
+					}
+					line = br.readLine();
+				}
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+		else
+		{
+			System.out.println("Load input file : Failed!");
+		}
+
+		System.out.println("\nList of Sx files :");
+		displayStars();
+		for(int i = 0; i< listOfSx.size(); i++)
+		{
+			System.out.println(listOfSx.get(i));
+		}
+
+		return listOfSx;
+	}
+
+	/**
+	 * Method to read a file as a String, and then use it to split per bloc later on
+	 * @param filePath
+	 * @return String that contains all the content of the file
+	 * @throws IOException
+	 */
+	private static String readFileAsString(String filePath) throws IOException {
+		StringBuffer fileData = new StringBuffer();
+		BufferedReader reader = new BufferedReader(
+				new FileReader(filePath));
+		char[] buf = new char[1024];
+		int numRead=0;
+		while((numRead=reader.read(buf)) != -1){
+			String readData = String.valueOf(buf, 0, numRead);
+			fileData.append(readData);
+		}
+		reader.close();
+		return fileData.toString();
+	}
+
+	/**
+	 * Splits the initial file to Sx files, the split here is done per bloc of numLines
+	 * @param args
+	 * @param numLines the number of lines per bloc
+	 * @return SxDictionary : the list of Sx files
+	 */
+	public static ArrayList<String> splitSxBloc(String[] args, int numLines){
+
+		ArrayList<String> listOfSx = new ArrayList<String>();
+		File fileInput = getFileInput(args);
+
+		int numLinesPerChunk = numLines;
+
+		BufferedReader reader = null;
+		PrintWriter writer = null;
+
+		long startTime = System.nanoTime();
+		try {
+			reader = new BufferedReader(new FileReader(fileInput));
+
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}
+
+		String line;        
+		if(fileInput.exists()){
+			System.out.println("Load input file : Success!");
+			displayStars();
+			try {
+
+				line = reader.readLine();
+				for (int i = 1; line != null; i++) {
+					writer = new PrintWriter(new FileWriter(directory + "S" + i + extensionFiles));
+					for (int j = 0; j < numLinesPerChunk && line != null; j++) {
+						writer.println(line);
+						line = reader.readLine();
+
+					}
+					writer.flush();
+					String your_result_string = readFileAsString(directory + "S" + i + 
+							extensionFiles).replaceAll("[ ]*[\n]+[ ]*", " ");
+					PrintWriter writer_final = new PrintWriter(directory + "S" + i +
+							extensionFiles);
+					writer_final.print("");
+					writer_final.print(your_result_string);
+					writer_final.close();
+					listOfSx.add("S"+ i +extensionFiles);
+				}
+				reader.close();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+
+			writer.close();
+		}
+		else
+		{
+			System.out.println("Load input file : Failed!");
+		}
+
+		System.out.println("\nList of Sx files :");
+		displayStars();
+		for(int i = 0; i< listOfSx.size(); i++)
+		{
+			System.out.println(listOfSx.get(i));
+		}
+
+		long endTime = System.nanoTime();
+		long duration = (endTime - startTime) / millisecondsUnit;
+		System.out.println("Duration of SPLIT SX per BLOC : " + duration + "seconds !");
+		return listOfSx;
+	}
+
+	/**
+	 * Convert the UmxDictionary to a wordDictionary
+	 * @param UmxDictionary
+	 * @return wordDictionary : for each word as a key, we get the list of Umx Files where it appears
+	 */
+	public static HashMap<String,HashSet<String>> 
+	convertUmxDictToWordsDict(HashMap<String,ArrayList<String>> UmxDictionary)
+	{
+		HashMap<String,HashSet<String>> wordsDictionary = new HashMap<String, HashSet<String>>();
+		for (String key: UmxDictionary.keySet()) {
+			ArrayList<String> wordsOfUm = UmxDictionary.get(key);
+			for (int i = 0; i< wordsOfUm.size(); i++)
+			{
+				String word = wordsOfUm.get(i);
+				if (!wordsDictionary.containsKey(word))
+				{   
+					HashSet<String> tmp = new HashSet<String>();
+					tmp.add(key);
+					wordsDictionary.put(word, tmp);
+				}
+				else
+				{
+					wordsDictionary.get(word).add(key);
+				}
+			}
+		}
+
+		return wordsDictionary;
+	}
+
+}
