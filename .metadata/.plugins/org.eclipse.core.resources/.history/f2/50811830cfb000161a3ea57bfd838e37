@@ -22,7 +22,7 @@ import java.util.regex.Pattern;
 public class Slave {
 
 	static String directoryPath = ConstantsSlave.directoryPath;
-	static String delimitersFilePath = ConstantsSlave.delimitersFileName;
+	static String delimitersFilePath = directoryPath + ConstantsSlave.delimitersFileName;
 	static String extensionFiles = ".txt";
 
 	/**
