@@ -1,0 +1,15 @@
+package master;
+
+public interface Constants {
+	static String finalFile = "";
+	static String directory = "/cal/homes/mbenseddik/shavadoopFiles/";
+	static String slaveJarName = "SLAVESHAVADOOP.jar";
+	static String delimitersFileName = "motsIgnores.txt";
+	static String pcsFilePath = "listOfPcs2.txt";
+	static String userName = "mbenseddik@";
+	static String extensionFiles = ".txt";
+	static String finalFileName = "reducedFile.txt";
+	static long timeout = 700L;
+	static long millisecondsUnit = 1000000000;
+	static int splitSxPortion = 100;
+}

@@ -1,0 +1,5 @@
+package master;
+
+public abstract class Constants {
+
+}

@@ -1,5 +1,11 @@
 package master;
 
+/**
+ * @author Benseddik Mohammed
+ * @author Sami Bergaoui
+ * @version 1.0.1
+ * Master Parameters Class
+ */
 public interface ConstantsMaster {
 	final static String finalFile = "";
 	final static String directory = "/cal/homes/mbenseddik/shavadoopFiles/";

@@ -2342,3 +2342,98 @@ org.eclipse.swt.SWTException: Widget is disposed
 	at org.eclipse.equinox.launcher.Main.basicRun(Main.java:603)
 	at org.eclipse.equinox.launcher.Main.run(Main.java:1465)
 	at org.eclipse.equinox.launcher.Main.main(Main.java:1438)
+!SESSION 2016-11-21 23:35:17.375 -----------------------------------------------
+eclipse.buildId=4.6.0.I20160606-1100
+java.version=1.8.0_101
+java.vendor=Oracle Corporation
+BootLoader constants: OS=macosx, ARCH=x86_64, WS=cocoa, NL=fr_FR
+Framework arguments:  -product org.eclipse.epp.package.java.product -keyring /Users/Bense/.eclipse_keyring
+Command-line arguments:  -os macosx -ws cocoa -arch x86_64 -product org.eclipse.epp.package.java.product -keyring /Users/Bense/.eclipse_keyring
+
+!ENTRY org.eclipse.core.resources 2 10035 2016-11-21 23:36:22.979
+!MESSAGE The workspace exited with unsaved changes in the previous session; refreshing workspace to recover changes.
+
+!ENTRY org.eclipse.core.net 1 0 2016-11-21 23:36:24.173
+!MESSAGE System property http.nonProxyHosts has been set to local|*.local|169.254/16|*.169.254/16 by an external source. This value will be overwritten using the values from the preferences
+
+!ENTRY org.eclipse.egit.ui 4 0 2016-11-22 00:00:25.952
+!MESSAGE Cannot lock /Users/Bense/git/Shavadoop/.git/index
+!STACK 0
+org.eclipse.jgit.errors.LockFailedException: Cannot lock /Users/Bense/git/Shavadoop/.git/index
+	at org.eclipse.jgit.dircache.DirCache.lock(DirCache.java:250)
+	at org.eclipse.jgit.dircache.DirCache.lock(DirCache.java:327)
+	at org.eclipse.jgit.dircache.DirCache.lock(DirCache.java:293)
+	at org.eclipse.jgit.lib.Repository.lockDirCache(Repository.java:1160)
+	at org.eclipse.jgit.api.AddCommand.call(AddCommand.java:148)
+	at org.eclipse.egit.ui.internal.staging.StagingView$49.run(StagingView.java:2553)
+	at org.eclipse.core.internal.jobs.Worker.run(Worker.java:55)
+!SESSION 2016-11-22 00:06:36.224 -----------------------------------------------
+eclipse.buildId=4.6.0.I20160606-1100
+java.version=1.8.0_101
+java.vendor=Oracle Corporation
+BootLoader constants: OS=macosx, ARCH=x86_64, WS=cocoa, NL=fr_FR
+Framework arguments:  -product org.eclipse.epp.package.java.product -product org.eclipse.epp.package.java.product -keyring /Users/Bense/.eclipse_keyring
+Command-line arguments:  -os macosx -ws cocoa -arch x86_64 -product org.eclipse.epp.package.java.product -data file:/Users/Bense/Documents/PersonnalProjets/Shavadoop/ -product org.eclipse.epp.package.java.product -keyring /Users/Bense/.eclipse_keyring
+
+!ENTRY org.eclipse.core.net 1 0 2016-11-22 00:06:44.682
+!MESSAGE System property http.nonProxyHosts has been set to local|*.local|169.254/16|*.169.254/16 by an external source. This value will be overwritten using the values from the preferences
+
+!ENTRY org.eclipse.equinox.p2.metadata.repository 2 0 2016-11-22 00:08:20.795
+!MESSAGE Error parsing metadata repository
+!SUBENTRY 1 org.eclipse.equinox.p2.core 2 0 2016-11-22 00:08:20.795
+!MESSAGE Error in file:/Users/Bense/.p2/org.eclipse.equinox.p2.repository/cache/content-1034870324.jar at line 58743, column 62: Missing required attribute in "property": value
+!SESSION 2016-11-22 00:09:35.580 -----------------------------------------------
+eclipse.buildId=4.6.0.I20160606-1100
+java.version=1.8.0_101
+java.vendor=Oracle Corporation
+BootLoader constants: OS=macosx, ARCH=x86_64, WS=cocoa, NL=fr_FR
+Framework arguments:  -product org.eclipse.epp.package.java.product -product org.eclipse.epp.package.java.product -product org.eclipse.epp.package.java.product -keyring /Users/Bense/.eclipse_keyring
+Command-line arguments:  -os macosx -ws cocoa -arch x86_64 -product org.eclipse.epp.package.java.product -product org.eclipse.epp.package.java.product -data file:/Users/Bense/Documents/PersonnalProjets/Shavadoop/ -product org.eclipse.epp.package.java.product -keyring /Users/Bense/.eclipse_keyring
+
+!ENTRY org.eclipse.core.net 1 0 2016-11-22 00:09:45.713
+!MESSAGE System property http.nonProxyHosts has been set to local|*.local|169.254/16|*.169.254/16 by an external source. This value will be overwritten using the values from the preferences
+
+!ENTRY org.eclipse.equinox.p2.metadata.repository 2 0 2016-11-22 00:10:51.003
+!MESSAGE Error parsing metadata repository
+!SUBENTRY 1 org.eclipse.equinox.p2.core 2 0 2016-11-22 00:10:51.003
+!MESSAGE Error in file:/Users/Bense/.p2/org.eclipse.equinox.p2.repository/cache/content-1034870324.jar at line 58743, column 62: Missing required attribute in "property": value
+!SESSION 2016-11-22 09:31:21.750 -----------------------------------------------
+eclipse.buildId=4.6.0.I20160606-1100
+java.version=1.8.0_101
+java.vendor=Oracle Corporation
+BootLoader constants: OS=macosx, ARCH=x86_64, WS=cocoa, NL=fr_FR
+Framework arguments:  -product org.eclipse.epp.package.java.product -keyring /Users/Bense/.eclipse_keyring
+Command-line arguments:  -os macosx -ws cocoa -arch x86_64 -product org.eclipse.epp.package.java.product -keyring /Users/Bense/.eclipse_keyring
+
+!ENTRY org.eclipse.core.net 1 0 2016-11-22 09:31:32.451
+!MESSAGE System property http.nonProxyHosts has been set to local|*.local|169.254/16|*.169.254/16 by an external source. This value will be overwritten using the values from the preferences
+
+!ENTRY org.eclipse.equinox.p2.metadata.repository 2 0 2016-11-22 09:32:02.796
+!MESSAGE Error parsing metadata repository
+!SUBENTRY 1 org.eclipse.equinox.p2.core 2 0 2016-11-22 09:32:02.796
+!MESSAGE Error in file:/Users/Bense/.p2/org.eclipse.equinox.p2.repository/cache/content-1034870324.jar at line 58743, column 62: Missing required attribute in "property": value
+!SESSION 2016-11-22 09:35:46.584 -----------------------------------------------
+eclipse.buildId=4.6.1.M20160907-1200
+java.version=1.8.0_101
+java.vendor=Oracle Corporation
+BootLoader constants: OS=macosx, ARCH=x86_64, WS=cocoa, NL=fr_FR
+Framework arguments:  -product org.eclipse.epp.package.java.product -product org.eclipse.epp.package.java.product -keyring /Users/Bense/.eclipse_keyring
+Command-line arguments:  -os macosx -ws cocoa -arch x86_64 -product org.eclipse.epp.package.java.product -data file:/Users/Bense/Documents/PersonnalProjets/Shavadoop/ -product org.eclipse.epp.package.java.product -keyring /Users/Bense/.eclipse_keyring
+
+!ENTRY org.eclipse.core.net 1 0 2016-11-22 09:36:00.162
+!MESSAGE System property http.nonProxyHosts has been set to local|*.local|169.254/16|*.169.254/16 by an external source. This value will be overwritten using the values from the preferences
+
+!ENTRY org.eclipse.equinox.p2.metadata.repository 2 0 2016-11-22 09:43:46.806
+!MESSAGE Error parsing metadata repository
+!SUBENTRY 1 org.eclipse.equinox.p2.core 2 0 2016-11-22 09:43:46.806
+!MESSAGE Error in file:/Users/Bense/.p2/org.eclipse.equinox.p2.repository/cache/content-1034870324.jar at line 58743, column 62: Missing required attribute in "property": value
+!SESSION 2016-11-22 10:39:46.652 -----------------------------------------------
+eclipse.buildId=4.6.1.M20160907-1200
+java.version=1.8.0_101
+java.vendor=Oracle Corporation
+BootLoader constants: OS=macosx, ARCH=x86_64, WS=cocoa, NL=fr_FR
+Framework arguments:  -product org.eclipse.epp.package.java.product -keyring /Users/Bense/.eclipse_keyring
+Command-line arguments:  -os macosx -ws cocoa -arch x86_64 -product org.eclipse.epp.package.java.product -keyring /Users/Bense/.eclipse_keyring
+
+!ENTRY org.eclipse.core.net 1 0 2016-11-22 10:39:57.461
+!MESSAGE System property http.nonProxyHosts has been set to local|*.local|169.254/16|*.169.254/16 by an external source. This value will be overwritten using the values from the preferences

@@ -1,0 +1,5 @@
+package slave;
+
+public interface ConstantsSlave {
+	final static String directoryPath = "/cal/homes/mbenseddik/shavadoopFiles/";
+}
